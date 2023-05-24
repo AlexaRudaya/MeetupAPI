@@ -5,7 +5,24 @@
         public static void ConfigureServices(IConfiguration configuration, IServiceCollection services,
             ILoggingBuilder logging)
         {
-            services.AddDbContext<MeetupContext>(_ => _.UseSqlServer(configuration.GetConnectionString("MeetupConnection")));
+            #region Logger
+
+            logging.ClearProviders();
+            logging.AddSerilog(
+                new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger());
+
+            #endregion
+
+            #region DB
+
+            services.AddDbContext<MeetupContext>(_ => _
+               .UseSqlServer(configuration.GetConnectionString("MeetupConnection"))
+               .EnableSensitiveDataLogging());
+
+            #endregion
+
         }
     }
 }
