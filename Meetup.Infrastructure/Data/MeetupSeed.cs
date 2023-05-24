@@ -55,29 +55,21 @@
             var sponsors = GetPreConfiguredSponsors().ToList();
             var speakers = GetPreConfiguredSpeakers().ToList();
 
-            var sponsorsForFirstEvent = new List<Sponsor>
-            {
-                sponsors.FirstOrDefault(_ => _.Name == "Google")!,
-                sponsors.FirstOrDefault(_ => _.Name == "Microsoft")! 
-            };
+            var sponsorsForFirstEvent = sponsors.
+                                            Where(_ => _.Name == "Google" && _.Name == "Microsoft")
+                                            .ToList();
 
-            var speakersForFirstEvent = new List<Speaker>
-            {
-                speakers.FirstOrDefault(_ => _.Name == "Kate John")!,
-                speakers.FirstOrDefault(_ => _.Name == "Emily Criss")!
-            };
+            var speakersForFirstEvent = speakers.
+                                            Where(_ => _.Name == "Kate John" && _.Name == "Emily Criss")
+                                            .ToList();
 
-            var sponsorsForSecondEvent = new List<Sponsor>
-            {
-                sponsors.FirstOrDefault(_ => _.Name == "Microsoft")!,
-                sponsors.FirstOrDefault(_ => _.Name == "Apple")! 
-            };
+            var sponsorsForSecondEvent = sponsors.
+                                            Where(_ => _.Name == "Microsoft" && _.Name == "Apple")
+                                            .ToList();
 
-            var speakersForSecondEvent = new List<Speaker>
-            {
-                speakers.FirstOrDefault(_ => _.Name == "John Smith")!,
-                speakers.FirstOrDefault(_ => _.Name == "Taylor Grand")! 
-            };
+            var speakersForSecondEvent = speakers.
+                                            Where(_ => _.Name == "John Smith" && _.Name == "Taylor Grand")
+                                            .ToList();
 
             return new List<Event>
             {

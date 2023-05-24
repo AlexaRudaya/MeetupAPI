@@ -2,7 +2,7 @@
 {
     public interface IBaseRepository<T> where T : BaseModel
     {
-        public Task<IEnumerable<T>> GetAllByAsync();
+        public Task<IEnumerable<T>> GetAllAsync();
 
         public Task<T?> GetByIdAsync(int id);
 

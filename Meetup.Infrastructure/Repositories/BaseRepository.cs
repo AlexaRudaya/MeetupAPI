@@ -11,7 +11,7 @@
             _table = _dbContext.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllByAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _table.ToListAsync();
         }
