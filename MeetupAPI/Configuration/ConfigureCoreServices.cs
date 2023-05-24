@@ -1,4 +1,7 @@
-﻿namespace MeetupAPI.Configuration
+﻿using Meetup.ApplicationCore.Interfaces.IRepository;
+using Meetup.Infrastructure.Repositories;
+
+namespace MeetupAPI.Configuration
 {
     public static class ConfigureCoreServices
     {
@@ -22,6 +25,14 @@
                .EnableSensitiveDataLogging());
 
             #endregion
+
+            #region Services
+
+            services.AddScoped<ISponsorRepository, SponsorRepository>();
+            services.AddAutoMapper(typeof(MapperProfile));
+
+            #endregion
         }
+
     }
 }
