@@ -1,7 +1,4 @@
-﻿using Meetup.ApplicationCore.Interfaces.IRepository;
-using Meetup.Infrastructure.Repositories;
-
-namespace MeetupAPI.Configuration
+﻿namespace MeetupAPI.Configuration
 {
     public static class ConfigureCoreServices
     {
@@ -23,6 +20,14 @@ namespace MeetupAPI.Configuration
             services.AddDbContext<MeetupContext>(_ => _
                .UseSqlServer(configuration.GetConnectionString("MeetupConnection"))
                .EnableSensitiveDataLogging());
+
+            #endregion
+
+            #region Validation
+
+            services.AddScoped<IValidator<SponsorDto>,SponsorValidation>();
+            services.AddScoped<IValidator<SpeakerDto>, SpeakerValidation>();
+            services.AddScoped<IValidator<EventDto>, EventValidation>();
 
             #endregion
 
