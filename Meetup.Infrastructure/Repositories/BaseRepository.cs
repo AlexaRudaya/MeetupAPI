@@ -11,16 +11,43 @@
             _table = _dbContext.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllByAsync(Func<IQueryable<T>, 
+            IIncludableQueryable<T, object>>? include = null, 
+            Expression<Func<T, bool>>? expression = null)
         {
-            return await _table.ToListAsync();
+            IQueryable<T> query = _table;
+
+            if (expression is not null)
+            {
+                query = query.Where(expression);
+            }
+            if (include is not null)
+            {
+                query = include(query);
+            }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T> GetOneByAsync(Func<IQueryable<T>, 
+            IIncludableQueryable<T, object>>? include = null,
+            Expression<Func<T, bool>>? expression = null)
         {
-            return await _table
-                            .Where(_ => _.Id == id)
-                            .FirstOrDefaultAsync();
+            IQueryable<T> query = _table;
+
+            if (expression is not null)
+            {
+                query = query.Where(expression);
+            }
+
+            if (include is not null)
+            {
+                query = include(query);
+            }
+
+            var model = await query.AsNoTracking().FirstOrDefaultAsync();
+
+            return model!;
         }
 
         public async Task CreateAsync(T entity)
@@ -39,12 +66,6 @@
         {
             _table.Remove(entity);
             await SaveChangesAsync();
-        }
-
-        public async Task<bool> EntityExists(int id)
-        {
-            return await _table
-                            .AnyAsync(_ => _.Id == id);
         }
 
         public async Task<bool> SaveChangesAsync()
