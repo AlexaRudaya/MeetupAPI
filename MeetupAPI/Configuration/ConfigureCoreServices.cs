@@ -33,7 +33,15 @@
 
             #region Services
 
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ISponsorRepository, SponsorRepository>();
+            services.AddScoped<ISpeakerRepository, SpeakerRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
+
+            services.AddScoped<ISponsorService, SponsorService>();
+            services.AddScoped<ISpeakerService, SpeakerService>();
+            services.AddScoped<IEventService, EventService>();
+
             services.AddAutoMapper(typeof(MapperProfile));
 
             #endregion

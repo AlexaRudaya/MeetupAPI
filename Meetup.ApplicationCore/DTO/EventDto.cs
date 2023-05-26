@@ -12,7 +12,11 @@
 
         public string? Location { get; set; }
 
+        public List<int> SponsorsIds { get; set; } = new();
+
         public List<Sponsor>? Sponsors { get; set; } = new();
+
+        public List<int> SpeakersIds { get; set; } = new();
 
         public List<Speaker>? Speakers { get; set; } = new();
     }

@@ -56,19 +56,19 @@
             var speakers = GetPreConfiguredSpeakers().ToList();
 
             var sponsorsForFirstEvent = sponsors.
-                                            Where(_ => _.Name == "Google" && _.Name == "Microsoft")
+                                            Where(_ => _.Name == "Google" || _.Name == "Microsoft")
                                             .ToList();
 
             var speakersForFirstEvent = speakers.
-                                            Where(_ => _.Name == "Kate John" && _.Name == "Emily Criss")
+                                            Where(_ => _.Name == "Kate John" || _.Name == "Emily Criss")
                                             .ToList();
 
             var sponsorsForSecondEvent = sponsors.
-                                            Where(_ => _.Name == "Microsoft" && _.Name == "Apple")
+                                            Where(_ => _.Name == "Microsoft" || _.Name == "Apple")
                                             .ToList();
 
             var speakersForSecondEvent = speakers.
-                                            Where(_ => _.Name == "John Smith" && _.Name == "Taylor Grand")
+                                            Where(_ => _.Name == "John Smith" || _.Name == "Taylor Grand")
                                             .ToList();
 
             return new List<Event>
@@ -78,7 +78,7 @@
                     new DateTime(2023, 09, 09, 12, 12, 0),
                     "Online", sponsorsForFirstEvent, speakersForFirstEvent),
 
-                new(".NET DEVELOPER CONFERENCE", " With a variety of talks. workshops, the conference offers developers a wide range of opportunities to learn about important topics in .NET.",
+                new(".NET DEVELOPER CONFERENCE", " With a variety of talks, workshops, the conference offers developers a wide range of opportunities to learn about important topics in .NET.",
                     "One working day, lunch break and coffee breaks.",
                     new DateTime(2023, 08, 08, 10, 10, 0),
                     "Cologne, Germany. Pullman Cologne Hotel in Cologne.", sponsorsForSecondEvent, speakersForSecondEvent)
