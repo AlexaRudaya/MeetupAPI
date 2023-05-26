@@ -5,11 +5,11 @@
         private readonly IValidator<EventDto> _validator;
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<EventService> _logger;
 
         public EventService(IValidator<EventDto> validator,
             IEventRepository eventRepository,
-            IMapper mapper, ILogger logger)
+            IMapper mapper, ILogger<EventService> logger)
         {
             _validator = validator;
             _eventRepository = eventRepository;
@@ -91,7 +91,7 @@
             return eventDeleted;
         }
 
-        public async Task<EventDto> UpdateAsync(EventDto eventDto)
+        public async Task<EventDto> UpdateAsync(int id, EventDto eventDto)
         {
             var validationResult = await _validator.ValidateAsync(eventDto);
 

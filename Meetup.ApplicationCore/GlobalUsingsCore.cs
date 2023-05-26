@@ -4,3 +4,5 @@ global using Meetup.ApplicationCore.DTO;
 global using FluentValidation;
 global using Microsoft.EntityFrameworkCore.Query;
 global using System.Linq.Expressions;
+global using Swashbuckle.AspNetCore.Annotations;
+
