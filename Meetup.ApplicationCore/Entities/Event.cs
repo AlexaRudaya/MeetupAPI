@@ -35,8 +35,8 @@
             Plan = plan;
             Date = date;
             Location = location;
-            Sponsors = sponsors;
-            Speakers = speakers;
+            Sponsors.AddRange(sponsors);
+            Speakers.AddRange(speakers);
         }
     }
 }

@@ -17,6 +17,11 @@
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets the collection of all Sponsors.
+        /// </summary>
+        /// <returns>DTO representing the collection of all Sponsors.</returns>
+        /// <exception cref="SponsorNotFoundException">Thrown when no Sponsors were found.</exception>
         public async Task<IEnumerable<SponsorDto>> GetAllAsync()
         {
             var sponsors = await _sponsorRepository.GetAllByAsync();
@@ -35,6 +40,12 @@
             return sponsorsDto;
         }
 
+        /// <summary>
+        /// Retrieves a Sponsor by it's ID.
+        /// </summary>
+        /// <param name="sponsorId">ID of the Sponsor wanted to get.</param>
+        /// <returns>DTO of a Sponsor with the given ID.</returns>
+        /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
         public async Task<SponsorDto> GetByIdAsync(int sponsorId)
         {
             var entity = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(sponsorId));
@@ -50,6 +61,12 @@
             return sponsorDto;
         }
 
+        /// <summary>
+        /// Creates a new Sponsor.
+        /// </summary>
+        /// <param name="sponsor">DTO for the Sponsor to be created.</param>
+        /// <returns>DTO for the ctreated Sponsor.</returns>
+        /// <exception cref="InvalidValueException">Thrown when the Sponsor data fails validation.</exception>
         public async Task<SponsorDto> CreateAsync(SponsorDto sponsor)
         {
             var validationResult = await _validator.ValidateAsync(sponsor);
@@ -68,6 +85,14 @@
             return sponsor;
         }
 
+        /// <summary>
+        /// Updates an existing Sponsor.
+        /// </summary>
+        /// <param name="id">ID of the Sponsor to update.</param>
+        /// <param name="sponsor">Updated Sponsor DTO.</param>
+        /// <returns>Updated Sponsor DTO.</returns>
+        /// <exception cref="InvalidValueException">Thrown when the Sponsor data fails validation.</exception>
+        /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
         public async Task<SponsorDto> UpdateAsync(int id,SponsorDto sponsor)
         {
             var validationResult = await _validator.ValidateAsync(sponsor);
@@ -79,21 +104,27 @@
 
             var existingSponsor = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
 
-            if (!existingSponsor.Id.Equals(id))
+            if (existingSponsor.Id != id)
             {
                 _logger.LogError($"Failed finding sponsor with Id:{id} while updating data.");
                 throw new SponsorNotFoundException($"Such sponsor with Id: {id} was not found");
             }
 
-            var sponsorToUpdate = _mapper.Map<Sponsor>(sponsor);
+            existingSponsor.Name = sponsor.Name;
 
-            await _sponsorRepository.UpdateAsync(sponsorToUpdate);
+            await _sponsorRepository.UpdateAsync(existingSponsor);
 
-            _logger.LogInformation($"Data for Sponsor with Id: {sponsor.Id} has been successfully updated.");
+            _logger.LogInformation($"Data for Sponsor with Id: {existingSponsor.Id} has been successfully updated.");
 
             return sponsor;
         }
 
+        /// <summary>
+        /// Removes an existing Sponsor.
+        /// </summary>
+        /// <param name="sponsorId">ID of the Sponsor to remove.</param>
+        /// <returns>DTO representing the deleted Sponsor.</returns>
+        /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
         public async Task<SponsorDto> DeleteAsync(int sponsorId)
         {
             var sponsorToDelete = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(sponsorId));
