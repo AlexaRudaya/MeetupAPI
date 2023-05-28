@@ -36,30 +36,6 @@
         }
 
         /// <summary>
-        /// Gets entities collection based on some criteria with EF Tracking.
-        /// </summary>
-        /// <param name="include">Allows to iclude related entities.</param>
-        /// <param name="expression">Allows to filter entities.</param>
-        /// <returns>The collection of entities.</returns>
-        public async Task<IEnumerable<T>> GetAllManyToManyAsync(Func<IQueryable<T>, 
-            IIncludableQueryable<T, object>>? include = null, 
-            Expression<Func<T, bool>>? expression = null)
-        {
-            IQueryable<T> query = _table;
-
-            if (expression is not null)
-            {
-                query = query.Where(expression);
-            }
-            if (include is not null)
-            {
-                query = include(query);
-            }
-
-            return await query.ToListAsync();
-        }
-
-        /// <summary>
         /// Gets a single entity based on some criteria.
         /// </summary>
         /// <param name="include">Allows to iclude related entities.</param>
@@ -131,10 +107,7 @@
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateAsync(T entity)
         {
-            //_table.Update(entity);
-            var result = _dbContext.Attach(entity);
-            result.State = EntityState.Modified;
-
+            _table.Update(entity);
             await SaveChangesAsync();
         }
 

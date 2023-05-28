@@ -142,6 +142,9 @@
             existingEvent.Date = eventDto.Date;
             existingEvent.Location = eventDto.Location;
 
+            existingEvent.Sponsors!.Clear();
+            existingEvent.Speakers!.Clear();
+
             foreach (var sponsorId in eventDto.SponsorsIds)
             {
                 var sponsor = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(sponsorId));
