@@ -1,5 +1,6 @@
 ﻿namespace MeetupAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SponsorsController : Controller
