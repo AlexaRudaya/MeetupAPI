@@ -15,22 +15,6 @@
 
             try
             {
-                if (!await meetupContext.Sponsors.AnyAsync())
-                {
-                    await meetupContext.AddRangeAsync(
-                        GetPreConfiguredSponsors());
-
-                    await meetupContext.SaveChangesAsync();
-                }
-
-                if (!await meetupContext.Speakers.AnyAsync())
-                {
-                    await meetupContext.AddRangeAsync(
-                        GetPreConfiguredSpeakers());
-
-                    await meetupContext.SaveChangesAsync();
-                }
-
                 if (!await meetupContext.Events.AnyAsync())
                 {
                     await meetupContext.AddRangeAsync(
@@ -52,24 +36,30 @@
 
         private static IEnumerable<Event> GetPreConfiguredEvents()
         {
-            var sponsors = GetPreConfiguredSponsors().ToList();
-            var speakers = GetPreConfiguredSpeakers().ToList();
+            var sponsorsForFirstEvent = new List<Sponsor>
+            {
+                new("Apple"),
+                new("Microsoft")                
+            };
 
-            var sponsorsForFirstEvent = sponsors.
-                                            Where(_ => _.Name == "Google" || _.Name == "Microsoft")
-                                            .ToList();
+            var speakersForFirstEvent = new List<Speaker>
+            {
+                new("John Smith"),
+                new("Kate John")
+            };
 
-            var speakersForFirstEvent = speakers.
-                                            Where(_ => _.Name == "Kate John" || _.Name == "Emily Criss")
-                                            .ToList();
+            var sponsorsForSecondEvent = new List<Sponsor>
+            {
+                new("Google"),
+                new("Intel")
 
-            var sponsorsForSecondEvent = sponsors.
-                                            Where(_ => _.Name == "Microsoft" || _.Name == "Apple")
-                                            .ToList();
+            };
 
-            var speakersForSecondEvent = speakers.
-                                            Where(_ => _.Name == "John Smith" || _.Name == "Taylor Grand")
-                                            .ToList();
+            var speakersForSecondEvent = new List<Speaker>
+            {
+                new("Emily Criss"),
+                new("Taylor Grand")
+            };
 
             return new List<Event>
             {
@@ -82,27 +72,6 @@
                     "One working day, lunch break and coffee breaks.",
                     new DateTime(2023, 08, 08, 10, 10, 0),
                     "Cologne, Germany. Pullman Cologne Hotel in Cologne.", sponsorsForSecondEvent, speakersForSecondEvent)
-            };
-        }
-
-        private static IEnumerable<Sponsor> GetPreConfiguredSponsors()
-        {
-            return new List<Sponsor>
-            {
-                new("Apple"),
-                new("Microsoft"),
-                new("Google")
-            };
-        }
-
-        private static IEnumerable<Speaker> GetPreConfiguredSpeakers()
-        {
-            return new List<Speaker>
-            {
-                new("John Smith"),
-                new("Kate John"),
-                new("Emily Criss"),
-                new("Taylor Grand")
             };
         }
     }

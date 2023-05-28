@@ -12,6 +12,10 @@ global using Microsoft.AspNetCore.Mvc;
 global using Meetup.ApplicationCore.Interfaces.IService;
 global using Meetup.Infrastructure.Services;
 global using Meetup.ApplicationCore.Entities;
-
-
-
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.OpenApi.Models;
+global using System.Reflection;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Text;
+global using IdentityServer4.AccessTokenValidation;
+global using Microsoft.AspNetCore.Authorization;

@@ -6,9 +6,17 @@
           IIncludableQueryable<T, object>>? include = null,
           Expression<Func<T, bool>>? expression = null);
 
+        public Task<IEnumerable<T>> GetAllManyToManyAsync(Func<IQueryable<T>,
+         IIncludableQueryable<T, object>>? include = null,
+         Expression<Func<T, bool>>? expression = null);
+
         public Task<T> GetOneByAsync(Func<IQueryable<T>, 
            IIncludableQueryable<T, object>>? include = null,
            Expression<Func<T, bool>>? expression = null);
+
+        public Task<T> GetOneManyToManyAsync(Func<IQueryable<T>,
+          IIncludableQueryable<T, object>>? include = null,
+          Expression<Func<T, bool>>? expression = null);
 
         public Task CreateAsync(T entity);
 
