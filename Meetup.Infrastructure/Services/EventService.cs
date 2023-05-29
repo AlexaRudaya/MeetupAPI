@@ -129,7 +129,7 @@
                 throw new InvalidValueException(validationResult.ToString());
             }
 
-            var existingEvent = await _eventRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
+            var existingEvent = await _eventRepository.GetOneManyToManyAsync(expression: _ => _.Id.Equals(id));
 
             if (existingEvent is null)
             {
