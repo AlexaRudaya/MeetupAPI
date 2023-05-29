@@ -107,7 +107,9 @@
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateAsync(T entity)
         {
-            _table.Update(entity);
+            var result = _dbContext.Attach(entity);
+            result.State = EntityState.Modified;
+
             await SaveChangesAsync();
         }
 
