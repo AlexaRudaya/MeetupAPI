@@ -19,3 +19,5 @@ global using Microsoft.AspNetCore.Authorization;
 global using Meetup.ApplicationCore.Exceptions;
 global using System.Net;
 global using System.Text.Json;
+global using Meetup.ApplicationCore.Interfaces.RabbitMQ;
+global using Meetup.Infrastructure.RabbitMQ;
