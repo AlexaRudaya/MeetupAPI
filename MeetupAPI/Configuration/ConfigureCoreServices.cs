@@ -41,6 +41,7 @@
             services.AddScoped<ISponsorService, SponsorService>();
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IProducerService, ProducerService>();
 
             services.AddAutoMapper(typeof(MapperProfile));
 
@@ -65,7 +66,7 @@
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
@@ -83,7 +84,7 @@
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
             });
@@ -95,11 +96,10 @@
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
-                    //the URL on which the IdentityServer is up and running
                     options.Authority = configuration["IdentityServer:Authority"];
-                    //the name of the WebAPI resource
+
                     options.ApiName = configuration["IdentityServer:ApiName"];
-                    //select false for the development
+
                     options.RequireHttpsMetadata = false; 
                 });
 
