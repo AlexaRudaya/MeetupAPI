@@ -27,7 +27,8 @@
         {
             var speakers = await _speakerService.GetAllAsync();
 
-            _producer.SendSpeakerMessage(speakers);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakers);
 
             return Ok(speakers);
         }
@@ -45,7 +46,8 @@
         {
             var speaker = await _speakerService.GetByIdAsync(id);
 
-            _producer.SendSpeakerMessage(speaker);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speaker);
 
             return Ok(speaker);
         }
@@ -62,7 +64,8 @@
         {
             var speakerToCreate = await _speakerService.CreateAsync(speakerDto);
 
-            _producer.SendSpeakerMessage(speakerToCreate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakerToCreate);
 
             return Ok("Successfully created");
         }
@@ -81,7 +84,8 @@
         {
             var speakerToUpdate = await _speakerService.UpdateAsync(id, updatedSpeaker);
 
-            _producer.SendSpeakerMessage(speakerToUpdate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakerToUpdate);
 
             return NoContent();
         }

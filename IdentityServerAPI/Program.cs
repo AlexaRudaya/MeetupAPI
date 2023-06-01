@@ -1,5 +1,3 @@
-using IdentityServerAPI;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -23,8 +21,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
+
 app.UseAuthorization();
+
 app.UseIdentityServer();
+
 app.MapControllers();
+
 app.Run();

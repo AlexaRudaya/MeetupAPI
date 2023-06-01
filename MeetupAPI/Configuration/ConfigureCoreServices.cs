@@ -96,8 +96,10 @@
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
                 {
+                    // Define here URL on which the IdentityServer is up and running
                     options.Authority = configuration["IdentityServer:Authority"];
 
+                    // Define here the name of the Resource (API)
                     options.ApiName = configuration["IdentityServer:ApiName"];
 
                     options.RequireHttpsMetadata = false; 
