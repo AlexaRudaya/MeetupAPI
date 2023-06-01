@@ -31,7 +31,8 @@ namespace MeetupAPI.Controllers
         {
             var sponsors = await _sponsorService.GetAllAsync();
 
-            _producer.SendSponsorMessage(sponsors);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsors);
 
             return Ok(sponsors);
         }
@@ -49,7 +50,8 @@ namespace MeetupAPI.Controllers
         { 
             var sponsor = await _sponsorService.GetByIdAsync(id);
 
-            _producer.SendSponsorMessage(sponsor);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsor);
 
             return Ok(sponsor);
         }
@@ -66,7 +68,8 @@ namespace MeetupAPI.Controllers
         {
             var sponsorToCreate = await _sponsorService.CreateAsync(sponsorDto);
 
-            _producer.SendSponsorMessage(sponsorToCreate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsorToCreate);
 
             return Ok("Successfully created");
         }
@@ -85,7 +88,8 @@ namespace MeetupAPI.Controllers
         { 
             var sponsorToUpdate = await _sponsorService.UpdateAsync(id, updatedSponsor);
 
-            _producer.SendSponsorMessage(sponsorToUpdate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsorToUpdate);
 
             return NoContent();
         }

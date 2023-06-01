@@ -27,7 +27,8 @@
         {
             var events = await _eventService.GetAllAsync();
 
-            _producer.SendEventMessage(events);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(events);
 
             return Ok(events);
         }
@@ -45,7 +46,8 @@
         { 
             var oneEvent = await _eventService.GetByIdAsync(id);
 
-            _producer.SendEventMessage(oneEvent);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(oneEvent);
 
             return Ok(oneEvent);
         }
@@ -62,7 +64,8 @@
         {
             var eventToCreate = await _eventService.CreateAsync(eventDto);
 
-            _producer.SendEventMessage(eventToCreate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(eventToCreate);
 
             return Ok("Successfully created");
         }
@@ -81,7 +84,8 @@
         {
             var eventToUpdate = await _eventService.UpdateAsync(id, updatedEvent);
 
-            _producer.SendEventMessage(eventToUpdate);
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(eventToUpdate);
 
             return NoContent();
         }
