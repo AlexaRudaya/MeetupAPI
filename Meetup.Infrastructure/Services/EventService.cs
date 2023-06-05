@@ -129,45 +129,11 @@
                 throw new InvalidValueException(validationResult.ToString());
             }
 
-            var existingEvent = await _eventRepository.GetOneManyToManyAsync(expression: _ => _.Id.Equals(id));
+            var eventUpdated = _mapper.Map<Event>(eventDto);
 
-            if (existingEvent is null)
-            {
-                throw new EventNotFoundException($"Event with Id: {id} was not found");
-            }
+            await _eventRepository.UpdateEventAsync(eventUpdated, eventDto.SponsorsIds, eventDto.SpeakersIds);
 
-            existingEvent.Name = eventDto.Name;
-            existingEvent.Description = eventDto.Description;
-            existingEvent.Plan = eventDto.Plan;
-            existingEvent.Date = eventDto.Date;
-            existingEvent.Location = eventDto.Location;
-
-            existingEvent.Sponsors!.Clear();
-            existingEvent.Speakers!.Clear();
-
-            foreach (var sponsorId in eventDto.SponsorsIds)
-            {
-                var sponsor = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(sponsorId));
-
-                if (sponsor is not null)
-                {
-                    existingEvent.Sponsors!.Add(sponsor);
-                }
-            }
-
-            foreach (var speakerId in eventDto.SpeakersIds)
-            {
-                var speaker = await _speakerRepository.GetOneByAsync(expression: _ => _.Id.Equals(speakerId));
-
-                if (speaker is not null)
-                {
-                    existingEvent.Speakers!.Add(speaker);
-                }
-            }
-
-            await _eventRepository.UpdateAsync(existingEvent);
-
-            _logger.LogInformation($"Data for Event with Id: {existingEvent.Id} has been successfully updated.");
+            _logger.LogInformation($"Data for Event with Id: {eventUpdated.Id} has been successfully updated.");
 
             return eventDto;
         }

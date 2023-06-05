@@ -1,4 +1,6 @@
-﻿namespace MeetupAPI.Controllers
+﻿using Meetup.ApplicationCore.Entities;
+
+namespace MeetupAPI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -6,10 +8,13 @@
     public class SponsorsController : Controller
     {
         private readonly ISponsorService _sponsorService;
+        private readonly IProducerService _producer;
 
-        public SponsorsController(ISponsorService sponsorService)
+
+        public SponsorsController(ISponsorService sponsorService, IProducerService producer)
         {
             _sponsorService = sponsorService;    
+            _producer = producer;
         }
 
         /// <summary>
@@ -25,6 +30,9 @@
         public async Task<IActionResult> GetSponsors()
         {
             var sponsors = await _sponsorService.GetAllAsync();
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsors);
 
             return Ok(sponsors);
         }
@@ -42,6 +50,9 @@
         { 
             var sponsor = await _sponsorService.GetByIdAsync(id);
 
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsor);
+
             return Ok(sponsor);
         }
 
@@ -56,6 +67,9 @@
         public async Task<IActionResult> CreateSponsor([FromBody] SponsorDto sponsorDto)
         {
             var sponsorToCreate = await _sponsorService.CreateAsync(sponsorDto);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsorToCreate);
 
             return Ok("Successfully created");
         }
@@ -73,6 +87,9 @@
                                                        [FromBody] SponsorDto updatedSponsor)
         { 
             var sponsorToUpdate = await _sponsorService.UpdateAsync(id, updatedSponsor);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSponsorMessage(sponsorToUpdate);
 
             return NoContent();
         }

@@ -6,10 +6,12 @@
     public class SpeakersController : ControllerBase
     {
         private readonly ISpeakerService _speakerService;
+        private readonly IProducerService _producer;
 
-        public SpeakersController(ISpeakerService speakerService)
+        public SpeakersController(ISpeakerService speakerService, IProducerService producer)
         {
             _speakerService = speakerService;
+            _producer = producer;
         }
 
         /// <summary>
@@ -24,6 +26,9 @@
         public async Task<IActionResult> GetSpeakers()
         {
             var speakers = await _speakerService.GetAllAsync();
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakers);
 
             return Ok(speakers);
         }
@@ -41,6 +46,9 @@
         {
             var speaker = await _speakerService.GetByIdAsync(id);
 
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speaker);
+
             return Ok(speaker);
         }
 
@@ -55,6 +63,9 @@
         public async Task<IActionResult> CreateSpeaker([FromBody] SpeakerDto speakerDto)
         {
             var speakerToCreate = await _speakerService.CreateAsync(speakerDto);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakerToCreate);
 
             return Ok("Successfully created");
         }
@@ -72,6 +83,9 @@
                                                        [FromBody] SpeakerDto updatedSpeaker)
         {
             var speakerToUpdate = await _speakerService.UpdateAsync(id, updatedSpeaker);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendSpeakerMessage(speakerToUpdate);
 
             return NoContent();
         }

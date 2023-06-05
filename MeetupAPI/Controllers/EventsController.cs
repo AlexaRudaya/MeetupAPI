@@ -6,10 +6,12 @@
     public class EventsController : ControllerBase
     {
         private readonly IEventService _eventService;
+        private readonly IProducerService _producer;
 
-        public EventsController(IEventService eventService)
+        public EventsController(IEventService eventService, IProducerService producer)
         {
             _eventService = eventService;
+            _producer = producer;
         }
 
         /// <summary>
@@ -24,6 +26,9 @@
         public async Task<IActionResult> GetEvents()
         {
             var events = await _eventService.GetAllAsync();
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(events);
 
             return Ok(events);
         }
@@ -41,6 +46,9 @@
         { 
             var oneEvent = await _eventService.GetByIdAsync(id);
 
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(oneEvent);
+
             return Ok(oneEvent);
         }
 
@@ -55,6 +63,9 @@
         public async Task<IActionResult> CreateEvent([FromBody] EventDto eventDto)
         {
             var eventToCreate = await _eventService.CreateAsync(eventDto);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(eventToCreate);
 
             return Ok("Successfully created");
         }
@@ -72,6 +83,9 @@
                                                      [FromBody] EventDto updatedEvent)
         {
             var eventToUpdate = await _eventService.UpdateAsync(id, updatedEvent);
+
+            // Uncomment if you want to use RabbitMQ
+            //_producer.SendEventMessage(eventToUpdate);
 
             return NoContent();
         }

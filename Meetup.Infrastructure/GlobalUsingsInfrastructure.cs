@@ -12,3 +12,7 @@ global using FluentValidation;
 global using Meetup.ApplicationCore.Exceptions;
 global using Microsoft.EntityFrameworkCore.Query;
 global using System.Linq.Expressions;
+global using Meetup.ApplicationCore.Interfaces.RabbitMQ;
+global using Newtonsoft.Json;
+global using RabbitMQ.Client;
+global using System.Text;
