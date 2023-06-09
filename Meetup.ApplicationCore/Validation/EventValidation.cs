@@ -25,8 +25,8 @@
                                     .WithMessage("Location must be set");
 
             RuleForEach(_ => _.Sponsors).NotNull()
-                                    .NotEmpty()
-                                    .WithMessage("Sponsors must be set");
+                                        .NotEmpty()
+                                        .WithMessage("Sponsors must be set");
 
             RuleForEach(_ => _.Speakers).NotNull()
                                         .NotEmpty()
