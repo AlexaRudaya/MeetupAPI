@@ -1,6 +1,6 @@
 ﻿namespace Meetup.ApplicationCore.Entities
 {
-    public sealed class Event : BaseModel
+    public class Event : BaseModel
     {
         [Required]
         public string? Name { get; set; }
