@@ -6,7 +6,7 @@ global using FluentValidation;
 global using Meetup.ApplicationCore.DTO;
 global using Meetup.ApplicationCore.Entities;
 global using Meetup.ApplicationCore.Interfaces.IRepository;
-global using Meetup.Infrastructure.Services;
+global using Meetup.ApplicationCore.Services;
 global using Microsoft.EntityFrameworkCore.Query;
 global using Microsoft.Extensions.Logging;
 global using System.Linq.Expressions;
