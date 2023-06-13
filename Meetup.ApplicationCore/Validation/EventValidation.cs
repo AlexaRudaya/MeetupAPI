@@ -23,14 +23,6 @@
             RuleFor(_ => _.Location).NotNull()
                                     .NotEmpty()
                                     .WithMessage("Location must be set");
-
-            RuleForEach(_ => _.Sponsors).NotNull()
-                                        .NotEmpty()
-                                        .WithMessage("Sponsors must be set");
-
-            RuleForEach(_ => _.Speakers).NotNull()
-                                        .NotEmpty()
-                                        .WithMessage("Speakers must be set");
         }
     }
 }

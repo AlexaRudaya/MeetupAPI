@@ -1,4 +1,4 @@
-﻿namespace Meetup.Infrastructure.Services
+﻿namespace Meetup.ApplicationCore.Services
 {
     public sealed class EventService : IEventService
     {
@@ -28,9 +28,9 @@
         /// </summary>
         /// <returns>DTO representing the collection of all Events.</returns>
         /// <exception cref="EventNotFoundException">Thrown when no Events were found.</exception>
-        public async Task<IEnumerable<EventDto>> GetAllAsync() 
+        public async Task<IEnumerable<EventDto>> GetAllAsync()
         {
-            var events = await _eventRepository.GetAllByAsync();  
+            var events = await _eventRepository.GetAllByAsync();
 
             if (events is null)
             {
@@ -120,7 +120,7 @@
         /// <returns>Updated Event DTO.</returns>
         /// <exception cref="InvalidValueException">Thrown when the Event data fails validation.</exception>
         /// <exception cref="EventNotFoundException">Thrown when there is no Event with such ID.</exception>
-        public async Task<EventDto> UpdateAsync(int id, EventDto eventDto)  
+        public async Task<EventDto> UpdateAsync(int id, EventDto eventDto)
         {
             var validationResult = await _validator.ValidateAsync(eventDto);
 

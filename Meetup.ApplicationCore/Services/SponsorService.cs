@@ -1,4 +1,4 @@
-﻿namespace Meetup.Infrastructure.Services
+﻿namespace Meetup.ApplicationCore.Services
 {
     public sealed class SponsorService : ISponsorService
     {
@@ -7,7 +7,7 @@
         private readonly IMapper _mapper;
         private readonly ILogger<SponsorService> _logger;
 
-        public SponsorService(IValidator<SponsorDto> validator, 
+        public SponsorService(IValidator<SponsorDto> validator,
             ISponsorRepository sponsorRepository,
             IMapper mapper, ILogger<SponsorService> logger)
         {
@@ -26,10 +26,10 @@
         {
             var sponsors = await _sponsorRepository.GetAllByAsync();
 
-            if (sponsors is null) 
+            if (sponsors is null)
             {
                 _logger.LogError("Failed loading sponsors list.");
-                throw new SponsorNotFoundException("No sponsors were found");       
+                throw new SponsorNotFoundException("No sponsors were found");
             }
 
             _logger.LogInformation("Sponsors are loaded");
@@ -93,7 +93,7 @@
         /// <returns>Updated Sponsor DTO.</returns>
         /// <exception cref="InvalidValueException">Thrown when the Sponsor data fails validation.</exception>
         /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
-        public async Task<SponsorDto> UpdateAsync(int id,SponsorDto sponsor)
+        public async Task<SponsorDto> UpdateAsync(int id, SponsorDto sponsor)
         {
             var validationResult = await _validator.ValidateAsync(sponsor);
 

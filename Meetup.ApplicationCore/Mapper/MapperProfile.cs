@@ -1,4 +1,4 @@
-﻿namespace Meetup.Infrastructure.Mapper
+﻿namespace Meetup.ApplicationCore.Mapper
 {
     public sealed class MapperProfile : AutoMapper.Profile
     {
