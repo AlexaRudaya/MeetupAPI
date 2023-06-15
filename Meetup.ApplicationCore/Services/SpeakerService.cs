@@ -1,4 +1,4 @@
-﻿namespace Meetup.Infrastructure.Services
+﻿namespace Meetup.ApplicationCore.Services
 {
     public sealed class SpeakerService : ISpeakerService
     {

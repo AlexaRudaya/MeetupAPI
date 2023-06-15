@@ -1,6 +1,6 @@
 ﻿namespace Meetup.ApplicationCore.Entities
 {
-    public sealed class Sponsor : BaseModel
+    public class Sponsor : BaseModel
     {
         [Required]
         public string? Name { get; set; }

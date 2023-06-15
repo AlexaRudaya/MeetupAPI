@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meetup.ApplicationCore", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meetup.Infrastructure", "Meetup.Infrastructure\Meetup.Infrastructure.csproj", "{C9C52767-E181-415A-BDBB-B4D696158EC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerAPI", "IdentityServerAPI\IdentityServerAPI.csproj", "{05B5EED5-C6F8-4D61-9EF2-5904D95F6982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerAPI", "IdentityServerAPI\IdentityServerAPI.csproj", "{05B5EED5-C6F8-4D61-9EF2-5904D95F6982}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{85C73932-4349-4079-90C0-C4107098EEA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{85C73932-4349-4079-90C0-C4107098EEA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupAPI.Tests", "MeetupAPI.Tests\MeetupAPI.Tests.csproj", "{AD87F502-D33D-448D-BF27-8EDB235FCCB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{85C73932-4349-4079-90C0-C4107098EEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85C73932-4349-4079-90C0-C4107098EEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85C73932-4349-4079-90C0-C4107098EEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD87F502-D33D-448D-BF27-8EDB235FCCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD87F502-D33D-448D-BF27-8EDB235FCCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD87F502-D33D-448D-BF27-8EDB235FCCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD87F502-D33D-448D-BF27-8EDB235FCCB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
