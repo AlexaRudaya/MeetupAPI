@@ -10,3 +10,4 @@ global using Meetup.ApplicationCore.Exceptions;
 global using Meetup.ApplicationCore.Interfaces.IRepository;
 global using Meetup.ApplicationCore.Interfaces.IService;
 global using Microsoft.Extensions.Logging;
+global using Meetup.ApplicationCore.Validation;

@@ -2,16 +2,13 @@
 {
     public sealed class SpeakerService : ISpeakerService
     {
-        private readonly IValidator<SpeakerDto> _validator;
         private readonly ISpeakerRepository _speakerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<SpeakerService> _logger;
 
-        public SpeakerService(IValidator<SpeakerDto> validator,
-            ISpeakerRepository speakerRepository,
+        public SpeakerService(ISpeakerRepository speakerRepository,
             IMapper mapper, ILogger<SpeakerService> logger)
         {
-            _validator = validator;
             _speakerRepository = speakerRepository;
             _mapper = mapper;
             _logger = logger;
@@ -69,12 +66,7 @@
         /// <exception cref="InvalidValueException">Thrown when the Speaker data fails validation.</exception>
         public async Task<SpeakerDto> CreateAsync(SpeakerDto speaker)
         {
-            var validationResult = await _validator.ValidateAsync(speaker);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await SpeakerValidation.ValidateSpeaker(speaker);
 
             var speakerToCreate = _mapper.Map<Speaker>(speaker);
 
@@ -95,12 +87,7 @@
         /// <exception cref="SpeakerNotFoundException">Thrown when there is no Speaker with such ID.</exception>
         public async Task<SpeakerDto> UpdateAsync(int id, SpeakerDto speaker)
         {
-            var validationResult = await _validator.ValidateAsync(speaker);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await SpeakerValidation.ValidateSpeaker(speaker);
 
             var existingSpeaker = await _speakerRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
 

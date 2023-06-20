@@ -24,5 +24,17 @@
                                     .NotEmpty()
                                     .WithMessage("Location must be set");
         }
+
+        public async static Task ValidateEvent(EventDto eventDto)
+        {
+            var validator = new EventValidation();
+
+            var validationResult = await validator.ValidateAsync(eventDto);
+
+            if (!validationResult.IsValid)
+            {
+                throw new InvalidValueException(validationResult.ToString());
+            }
+        }
     }
 }
