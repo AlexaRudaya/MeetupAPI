@@ -2,20 +2,17 @@
 {
     public sealed class EventService : IEventService
     {
-        private readonly IValidator<EventDto> _validator;
         private readonly IEventRepository _eventRepository;
         private readonly ISponsorRepository _sponsorRepository;
         private readonly ISpeakerRepository _speakerRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<EventService> _logger;
 
-        public EventService(IValidator<EventDto> validator,
-            IEventRepository eventRepository,
+        public EventService(IEventRepository eventRepository,
             ISponsorRepository sponsorRepository,
             ISpeakerRepository speakerRepository,
             IMapper mapper, ILogger<EventService> logger)
         {
-            _validator = validator;
             _eventRepository = eventRepository;
             _sponsorRepository = sponsorRepository;
             _speakerRepository = speakerRepository;
@@ -73,12 +70,7 @@
         /// <exception cref="InvalidValueException">Thrown when the Event data fails validation.</exception>
         public async Task<EventDto> CreateAsync(EventDto eventDto)
         {
-            var validationResult = await _validator.ValidateAsync(eventDto);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await EventValidation.ValidateEvent(eventDto);
 
             var eventToCreate = _mapper.Map<Event>(eventDto);
 
@@ -122,12 +114,7 @@
         /// <exception cref="EventNotFoundException">Thrown when there is no Event with such ID.</exception>
         public async Task<EventDto> UpdateAsync(int id, EventDto eventDto)
         {
-            var validationResult = await _validator.ValidateAsync(eventDto);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await EventValidation.ValidateEvent(eventDto);
 
             var eventUpdated = _mapper.Map<Event>(eventDto);
 

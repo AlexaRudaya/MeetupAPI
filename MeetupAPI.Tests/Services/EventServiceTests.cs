@@ -1,7 +1,4 @@
-﻿using FluentValidation.TestHelper;
-using ValidationResult = FluentValidation.Results.ValidationResult;
-
-namespace MeetupAPI.Tests.Services
+﻿namespace MeetupAPI.Tests.Services
 {
     public class EventServiceTests
     {
@@ -39,7 +36,7 @@ namespace MeetupAPI.Tests.Services
             A.CallTo(() => _mapper.Map<IEnumerable<EventDto>>(events))
                                                              .Returns(eventDtoList);
 
-            var eventService = new EventService(_validator, _eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
             // Act
             var result = await eventService.GetAllAsync();
@@ -64,7 +61,7 @@ namespace MeetupAPI.Tests.Services
             A.CallTo(() => _mapper.Map<EventDto>(eventEntity))
                                                 .Returns(eventDto);
 
-            var eventService = new EventService(_validator, _eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
             // Act
             var result = await eventService.GetByIdAsync(eventId);
@@ -88,33 +85,29 @@ namespace MeetupAPI.Tests.Services
                 Location = "Test Location",
             };
 
-           // var validationResult = ValidationResult.Success;
-
             var eventToCreate = A.Fake<Event>();
 
-           // A.CallTo(() => _validator.Validate(eventDto))
-                //.Invokes(() => Task.FromResult(validationResult));
-
-
             A.CallTo(() => _mapper.Map<Event>(eventDto))
-                                  .Returns(eventToCreate);    
+                                  .Returns(eventToCreate);
 
-            //A.CallTo(() => _sponsorRepository.GetOneManyToManyAsync(A<Func<IQueryable<Sponsor>, IIncludableQueryable<Sponsor, object>>>.Ignored,
-            //                                                        A<Expression<Func<Sponsor, bool>>>.Ignored))
-            //                                                       .ReturnsNextFromSequence(eventDto.Sponsors.Select(_ => Task.FromResult(_)).ToArray());
+            A.CallTo(() => _sponsorRepository.GetOneManyToManyAsync(A<Func<IQueryable<Sponsor>, IIncludableQueryable<Sponsor, object>>>.Ignored,
+                                                                    A<Expression<Func<Sponsor, bool>>>.Ignored))
+                                                                   .Returns(new Sponsor());
 
-            //A.CallTo(() => _speakerRepository.GetOneManyToManyAsync(A<Func<IQueryable<Speaker>, IIncludableQueryable<Speaker, object>>>.Ignored,
-            //                                                        A<Expression<Func<Speaker, bool>>>.Ignored))
-            //                                                       .ReturnsNextFromSequence(eventDto.Speakers.Select(_ => Task.FromResult(_)).ToArray());
+            A.CallTo(() => _speakerRepository.GetOneManyToManyAsync(A<Func<IQueryable<Speaker>, IIncludableQueryable<Speaker, object>>>.Ignored,
+                                                                  A<Expression<Func<Speaker, bool>>>.Ignored))
+                                                                 .Returns(new Speaker());
 
             A.CallTo(() => _eventRepository.CreateAsync(eventToCreate)).Returns(Task.CompletedTask);
 
-            var eventService = new EventService(_validator, _eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
             // Act
+            var validationResult = await _validator.TestValidateAsync(eventDto);
             var result = await eventService.CreateAsync(eventDto);
 
             // Assert
+            validationResult.ShouldNotHaveAnyValidationErrors();
             result.Should().NotBeNull();
         }
 
@@ -123,7 +116,6 @@ namespace MeetupAPI.Tests.Services
         {
             // Arrange
             var eventId = 1;
-            //var eventEntityToUpdate = new Event { Id = eventId, Name = "Conference Update" };
             var eventEntityToUpdate = new Event
             {
                 Id = 1,
@@ -135,7 +127,6 @@ namespace MeetupAPI.Tests.Services
                 Sponsors = new List<Sponsor> { A.Fake<Sponsor>(), A.Fake<Sponsor>() },
                 Speakers = new List<Speaker> { A.Fake<Speaker>(), A.Fake<Speaker>() },
             };
-            //var eventToUpdate = new EventDto { Id = eventId, Name = "Conference Update" };
             var eventToUpdate = new EventDto
             {
                 Id = 1,
@@ -148,28 +139,22 @@ namespace MeetupAPI.Tests.Services
                 SpeakersIds = new List<int> { 1, 3 }
             };
 
-            //var validationResult = new ValidationResult();
+            A.CallTo(() => _eventRepository.GetOneByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
+                                                          A<Expression<Func<Event, bool>>>.Ignored))
+                                                         .Returns(eventEntityToUpdate);
 
-            //A.CallTo(() => _validator.Validate(eventToUpdate))
-            //    .Invokes(() => Task.FromResult(validationResult));
-
-            //A.CallTo(() => _eventRepository.GetOneByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
-            //                                              A<Expression<Func<Event, bool>>>.Ignored))
-            //                                             .Returns(eventEntityToUpdate);
-
-            //var validation = _validator.TestValidate(eventToUpdate);
-            var validation = _validator.ValidateAsync(eventToUpdate);
 
             A.CallTo(() => _mapper.Map<EventDto>(eventEntityToUpdate))
                                                 .Returns(eventToUpdate);
 
-            var eventService = new EventService(_validator, _eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
             // Act
+            var validationResult = await _validator.TestValidateAsync(eventToUpdate);
             var result = await eventService.UpdateAsync(eventId, eventToUpdate);
 
             // Assert
-            //validation.ShouldNotHaveAnyValidationErrors();
+            validationResult.ShouldNotHaveAnyValidationErrors();
             result.Should().NotBeNull();
         }
     }

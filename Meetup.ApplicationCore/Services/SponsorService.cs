@@ -2,16 +2,13 @@
 {
     public sealed class SponsorService : ISponsorService
     {
-        private readonly IValidator<SponsorDto> _validator;
         private readonly ISponsorRepository _sponsorRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<SponsorService> _logger;
 
-        public SponsorService(IValidator<SponsorDto> validator,
-            ISponsorRepository sponsorRepository,
+        public SponsorService(ISponsorRepository sponsorRepository,
             IMapper mapper, ILogger<SponsorService> logger)
         {
-            _validator = validator;
             _sponsorRepository = sponsorRepository;
             _mapper = mapper;
             _logger = logger;
@@ -69,12 +66,7 @@
         /// <exception cref="InvalidValueException">Thrown when the Sponsor data fails validation.</exception>
         public async Task<SponsorDto> CreateAsync(SponsorDto sponsor)
         {
-            var validationResult = await _validator.ValidateAsync(sponsor);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await SponsorValidation.ValidateSponsor(sponsor);
 
             var sponsorToCreate = _mapper.Map<Sponsor>(sponsor);
 
@@ -95,12 +87,7 @@
         /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
         public async Task<SponsorDto> UpdateAsync(int id, SponsorDto sponsor)
         {
-            var validationResult = await _validator.ValidateAsync(sponsor);
-
-            if (!validationResult.IsValid)
-            {
-                throw new InvalidValueException(validationResult.ToString());
-            }
+            await SponsorValidation.ValidateSponsor(sponsor);
 
             var existingSponsor = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
 
