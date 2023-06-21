@@ -85,9 +85,9 @@
         /// <returns>Updated Speaker DTO.</returns>
         /// <exception cref="InvalidValueException">Thrown when the Speaker data fails validation.</exception>
         /// <exception cref="SpeakerNotFoundException">Thrown when there is no Speaker with such ID.</exception>
-        public async Task<SpeakerDto> UpdateAsync(int id, SpeakerDto speaker)
+        public async Task<SpeakerDto> UpdateAsync(int id, SpeakerDto speakerDto)
         {
-            await SpeakerValidation.ValidateSpeaker(speaker);
+            await SpeakerValidation.ValidateSpeaker(speakerDto);
 
             var existingSpeaker = await _speakerRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
 
@@ -97,13 +97,13 @@
                 throw new SpeakerNotFoundException($"Such speaker with Id: {id} was not found");
             }
 
-            existingSpeaker.Name = speaker.Name;
+            var speakerToUpdate = _mapper.Map<Speaker>(speakerDto);
 
             await _speakerRepository.UpdateAsync(existingSpeaker);
 
             _logger.LogInformation($"Data for Speaker with Id: {existingSpeaker.Id} has been successfully updated.");
 
-            return speaker;
+            return speakerDto;
         }
 
         /// <summary>

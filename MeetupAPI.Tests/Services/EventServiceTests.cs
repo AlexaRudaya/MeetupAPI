@@ -27,7 +27,8 @@
             var event2 = new Event { Id = 2, Name = "Online webinar" };
             var event3 = new Event { Id = 3, Name = "Online community .NET" };
             var events = new List<Event> { event1, event2, event3 };
-            var eventDtoList = events.Select(_ => new EventDto { Id = _.Id, Name = _.Name }).ToList();
+            var eventDtoList = events.Select(_ => new EventDto { Id = _.Id, Name = _.Name })
+                                     .ToList();
 
             A.CallTo(() => _eventRepository.GetAllByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
                                                           A<Expression<Func<Event, bool>>>.Ignored))
@@ -98,7 +99,8 @@
                                                                   A<Expression<Func<Speaker, bool>>>.Ignored))
                                                                  .Returns(new Speaker());
 
-            A.CallTo(() => _eventRepository.CreateAsync(eventToCreate)).Returns(Task.CompletedTask);
+            A.CallTo(() => _eventRepository.CreateAsync(eventToCreate))
+                                           .Returns(Task.CompletedTask);
 
             var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
@@ -130,7 +132,7 @@
             var eventToUpdate = new EventDto
             {
                 Id = 1,
-                Name = "Test Conference",
+                Name = "Digital Conference",
                 Description = "Test Description",
                 Plan = "Test Plan",
                 Date = DateTime.Today,
@@ -147,6 +149,9 @@
             A.CallTo(() => _mapper.Map<EventDto>(eventEntityToUpdate))
                                                 .Returns(eventToUpdate);
 
+            A.CallTo(() => _eventRepository.UpdateAsync(eventEntityToUpdate))
+                                           .Returns(Task.CompletedTask);
+
             var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
 
             // Act
@@ -156,6 +161,39 @@
             // Assert
             validationResult.ShouldNotHaveAnyValidationErrors();
             result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task EventService_DeleteAsync_ReturnsEventDto()
+        {
+            // Arrange
+            int eventId = 1;
+            var eventEntityToDelete = new Event
+            {
+                Id = eventId
+            };
+            var eventToDelete = new EventDto
+            {
+                Id = eventId
+            };
+
+            A.CallTo(() => _eventRepository.GetOneByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
+                                                           A<Expression<Func<Event, bool>>>.Ignored))
+                                                          .Returns(eventEntityToDelete);
+
+            A.CallTo(() => _mapper.Map<EventDto>(eventEntityToDelete))
+                                                .Returns(eventToDelete);
+
+            A.CallTo(() => _eventRepository.DeleteAsync(eventEntityToDelete))
+                                           .Returns(Task.CompletedTask);
+
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+
+            // Act
+            var result = await eventService.DeleteAsync(eventId);
+
+            // Assert
+            result.Id.Should().Be(eventId);
         }
     }
 }

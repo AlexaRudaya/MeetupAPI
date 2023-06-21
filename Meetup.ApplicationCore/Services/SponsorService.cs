@@ -85,9 +85,9 @@
         /// <returns>Updated Sponsor DTO.</returns>
         /// <exception cref="InvalidValueException">Thrown when the Sponsor data fails validation.</exception>
         /// <exception cref="SponsorNotFoundException">Thrown when there is no Sponsor with such ID.</exception>
-        public async Task<SponsorDto> UpdateAsync(int id, SponsorDto sponsor)
+        public async Task<SponsorDto> UpdateAsync(int id, SponsorDto sponsorDto)
         {
-            await SponsorValidation.ValidateSponsor(sponsor);
+            await SponsorValidation.ValidateSponsor(sponsorDto);
 
             var existingSponsor = await _sponsorRepository.GetOneByAsync(expression: _ => _.Id.Equals(id));
 
@@ -97,13 +97,13 @@
                 throw new SponsorNotFoundException($"Such sponsor with Id: {id} was not found");
             }
 
-            existingSponsor.Name = sponsor.Name;
+            var sponsorToUpdate = _mapper.Map<Sponsor>(sponsorDto);
 
             await _sponsorRepository.UpdateAsync(existingSponsor);
 
             _logger.LogInformation($"Data for Sponsor with Id: {existingSponsor.Id} has been successfully updated.");
 
-            return sponsor;
+            return sponsorDto;
         }
 
         /// <summary>
