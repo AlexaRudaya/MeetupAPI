@@ -39,8 +39,10 @@
             var result = await sponsorService.GetAllAsync();
 
             // Assert
-            result.Should().NotBeNull();
-            result.Should().HaveCount(3);   
+            result.Should().NotBeNullOrEmpty();
+            result.Should().HaveCount(3)
+                 .And.OnlyHaveUniqueItems();
+            result.Should().BeInAscendingOrder(_ => _.Name);
         }
 
         [Fact]
@@ -66,6 +68,7 @@
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(sponsorId);
+            sponsorId.Should().Be(1);
         }
 
         [Fact]
@@ -132,6 +135,7 @@
             // Assert
             validationResult.ShouldNotHaveAnyValidationErrors();
             result.Should().NotBeNull();
+            sponsorId.Should().Be(1);
         }
 
         [Fact]
@@ -165,6 +169,7 @@
 
             // Assert
             result.Should().BeEquivalentTo(sponsorEntityToDelete);
+            sponsorId.Should().Be(4);
         }
     }
 }
