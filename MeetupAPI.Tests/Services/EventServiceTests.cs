@@ -43,8 +43,10 @@
             var result = await eventService.GetAllAsync();
 
             // Assert
-            result.Should().NotBeNull();
-            result.Should().HaveCount(3);
+            result.Should().NotBeNullOrEmpty();
+            result.Should().HaveCount(3)
+                  .And.OnlyHaveUniqueItems();
+            result.Should().BeInAscendingOrder(_ => _.Date);
         }
 
         [Fact]
@@ -70,6 +72,7 @@
             // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(eventId);
+            eventId.Should().Be(1);
         }
 
         [Fact]
@@ -161,6 +164,7 @@
             // Assert
             validationResult.ShouldNotHaveAnyValidationErrors();
             result.Should().NotBeNull();
+            eventId.Should().Be(1);
         }
 
         [Fact]
@@ -194,6 +198,7 @@
 
             // Assert
             result.Id.Should().Be(eventId);
+            eventId.Should().Be(1);
         }
     }
 }
