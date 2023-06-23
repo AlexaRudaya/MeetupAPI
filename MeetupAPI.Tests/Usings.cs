@@ -11,3 +11,4 @@ global using Microsoft.EntityFrameworkCore.Query;
 global using Microsoft.Extensions.Logging;
 global using System.Linq.Expressions;
 global using FluentValidation.TestHelper;
+global using Meetup.ApplicationCore.Exceptions;
