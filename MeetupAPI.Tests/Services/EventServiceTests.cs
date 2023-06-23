@@ -50,6 +50,26 @@
         }
 
         [Fact]
+        public async Task EventService_GetAllAsync_ThrowsEventNotFoundException_ReturnsNull()
+        {
+            // Arrange
+            List<Event> nullEvents = null;
+
+            A.CallTo(() => _eventRepository.GetAllByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
+                                                          A<Expression<Func<Event, bool>>>.Ignored))
+                                                         .Returns(nullEvents);
+
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+
+            // Act
+            Func<Task<IEnumerable<EventDto>>> action = () => eventService.GetAllAsync();
+
+            // Assert
+            await action.Should().ThrowAsync<EventNotFoundException>()
+                                 .WithMessage("No events were found");
+        }
+
+        [Fact]
         public async Task EventService_GetByIdAsync_ReturnsEventDto()
         {
             // Arrange
@@ -73,6 +93,27 @@
             result.Should().NotBeNull();
             result.Id.Should().Be(eventId);
             eventId.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task EventService_GetByIdAsync_ThrowsEventNotFoundException_ReturnsNull()
+        {
+            // Arrange
+            int eventId = 55;
+            Event eventEntityGetByIdIsNull = null;
+
+            A.CallTo(() => _eventRepository.GetOneByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
+                                                          A<Expression<Func<Event, bool>>>.Ignored))
+                                                         .Returns(eventEntityGetByIdIsNull!);
+
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+
+            // Act
+            Func<Task<EventDto>> action = () => eventService.GetByIdAsync(eventId);
+
+            // Assert
+            await action.Should().ThrowAsync<EventNotFoundException>()
+                                 .WithMessage($"Such event with Id: {eventId} was not found");
         }
 
         [Fact]
@@ -199,6 +240,27 @@
             // Assert
             result.Id.Should().Be(eventId);
             eventId.Should().Be(1);
+        }
+
+        [Fact]
+        public async Task EventService_DeleteAsync_ThrowsEventNotFoundException_ReturnsNull()
+        {
+            // Arrange
+            int eventId = 4;
+            Event eventEntityToDeleteIsNull = null;
+
+            A.CallTo(() => _eventRepository.GetOneByAsync(A<Func<IQueryable<Event>, IIncludableQueryable<Event, object>>>.Ignored,
+                                                          A<Expression<Func<Event, bool>>>.Ignored))
+                                                         .Returns(eventEntityToDeleteIsNull!);
+
+            var eventService = new EventService(_eventRepository, _sponsorRepository, _speakerRepository, _mapper, _logger);
+
+            // Act
+            Func<Task<EventDto>> action = () => eventService.DeleteAsync(eventId);
+
+            // Assert
+            await action.Should().ThrowAsync<EventNotFoundException>()
+                                 .WithMessage($"Such event with Id: {eventId} was not found");
         }
     }
 }
