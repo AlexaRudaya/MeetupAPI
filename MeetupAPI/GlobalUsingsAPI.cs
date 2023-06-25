@@ -21,3 +21,5 @@ global using Meetup.ApplicationCore.Interfaces.RabbitMQ;
 global using Meetup.Infrastructure.RabbitMQ;
 global using Meetup.ApplicationCore.Mapper;
 global using Meetup.ApplicationCore.Services;
+global using MeetupAPI.Interfaces;
+global using MeetupAPI.Middlewares;
