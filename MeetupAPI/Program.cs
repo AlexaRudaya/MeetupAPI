@@ -1,10 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureCoreServices.ConfigureServices(builder.Configuration, builder.Services, builder.Logging);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.InstallServices(
+    builder.Configuration,
+    builder.Logging,
+    typeof(IServiceInstaller).Assembly);
 
 var app = builder.Build();
 
